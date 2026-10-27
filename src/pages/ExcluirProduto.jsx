@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { BASE_URL } from '../services/api';
 
 function ExcluirProduto() {
   // Estados do Produto
@@ -31,7 +32,8 @@ function ExcluirProduto() {
     if (!token) return navigate('/');
 
     try {
-      const resposta = await fetch(`http://localhost:8080/api/produtos/${idProduto}`, {
+      // CORREÇÃO: Utilizando a BASE_URL
+      const resposta = await fetch(`${BASE_URL}/api/produtos/${idProduto}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -69,8 +71,8 @@ function ExcluirProduto() {
     if (!token) return navigate('/');
 
     try {
-      // Faz a requisição enviando o nome digitado na URL
-      const resposta = await fetch(`http://localhost:8080/api/categorias/nome/${encodeURIComponent(nomeCategoria)}`, {
+      // CORREÇÃO: Utilizando a BASE_URL
+      const resposta = await fetch(`${BASE_URL}/api/categorias/nome/${encodeURIComponent(nomeCategoria)}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -81,7 +83,6 @@ function ExcluirProduto() {
         setConfirmacaoCategoria('');
       } else {
         const erro = await resposta.json();
-        // Exibe o erro exato vindo do Java (ex: Ação negada, produto com estoque...)
         alert(erro.erro || 'Erro ao excluir a categoria.');
       }
     } catch (erro) {
@@ -125,7 +126,6 @@ function ExcluirProduto() {
                   maxLength="10"
                   placeholder="Apenas números" 
                   value={idProduto} 
-                  // A máscara abaixo arranca qualquer letra que o usuário tentar digitar!
                   onChange={(e) => setIdProduto(e.target.value.replace(/\D/g, ''))} 
                   style={{ padding: '12px', borderRadius: '5px', border: '1px solid #ccc', backgroundColor: '#f9f9f9' }} 
                   required 
@@ -150,7 +150,7 @@ function ExcluirProduto() {
             </form>
           </div>
 
-          {/* Lado Direito: Categoria (AGORA ATIVO!) */}
+          {/* Lado Direito: Categoria */}
           <div style={{ flex: 1, backgroundColor: 'white', padding: '30px', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
             <h3>Excluir categoria</h3>
             <p style={{ color: '#666', fontSize: '14px', marginBottom: '20px' }}>

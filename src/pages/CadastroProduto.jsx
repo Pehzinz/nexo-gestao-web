@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { BASE_URL } from '../services/api';
 
 function CadastroProduto() {
   const [modo, setModo] = useState('CADASTRAR');
@@ -18,7 +19,7 @@ function CadastroProduto() {
 
   // NOVOS ESTADOS: Promoção (Cadastro)
   const [precoPromo, setPrecoPromo] = useState('');
-  const [dataInicioPromo, setDataInicioPromo] = useState(''); // <--- NOVO
+  const [dataInicioPromo, setDataInicioPromo] = useState(''); 
   const [dataFimPromo, setDataFimPromo] = useState('');
 
   // --- Estados para REPOR ESTOQUE / EDITAR ---
@@ -30,7 +31,7 @@ function CadastroProduto() {
 
   // NOVOS ESTADOS: Promoção (Edição)
   const [precoPromoEdicao, setPrecoPromoEdicao] = useState('');
-  const [dataInicioPromoEdicao, setDataInicioPromoEdicao] = useState(''); // <--- NOVO
+  const [dataInicioPromoEdicao, setDataInicioPromoEdicao] = useState(''); 
   const [dataFimPromoEdicao, setDataFimPromoEdicao] = useState('');
 
   const [categorias, setCategorias] = useState([]);
@@ -48,7 +49,7 @@ function CadastroProduto() {
     if (!token) return;
 
     try {
-      const resposta = await fetch('http://localhost:8080/api/categorias', {
+      const resposta = await fetch(BASE_URL + '/api/categorias', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (resposta.ok) {
@@ -73,7 +74,7 @@ function CadastroProduto() {
     if (!token) return;
 
     try {
-      const resposta = await fetch('http://localhost:8080/api/categorias', {
+      const resposta = await fetch(BASE_URL + '/api/categorias', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -156,7 +157,8 @@ function CadastroProduto() {
   const salvarEdicaoProduto = async (produtoEditado, mensagemSucesso = 'Alteração salva com sucesso!') => {
     const token = localStorage.getItem('token');
     try {
-      const resposta = await fetch(`http://localhost:8080/api/produtos/${produtoEditado.id}`, {
+      // CORREÇÃO: Utilizando a BASE_URL
+      const resposta = await fetch(`${BASE_URL}/api/produtos/${produtoEditado.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -200,7 +202,7 @@ function CadastroProduto() {
 
   const removerPromocaoExistente = () => {
     setPrecoPromoEdicao('');
-    setDataInicioPromoEdicao(''); // NOVO: Limpa a data de início
+    setDataInicioPromoEdicao(''); 
     setDataFimPromoEdicao('');
     
     const produtoAtualizado = { 
@@ -250,12 +252,12 @@ function CadastroProduto() {
       categoria: { id: parseInt(categoriaSelecionada) },
       imagemUrl: imagemUrl,
       precoPromocional: pPromo,
-      dataInicioPromocao: dataInicioPromo || null, // NOVO: Salva a data de início
+      dataInicioPromocao: dataInicioPromo || null, 
       dataFimPromocao: dataFimPromo || null
     };
 
     try {
-      const resposta = await fetch('http://localhost:8080/api/produtos', {
+      const resposta = await fetch(BASE_URL + '/api/produtos', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -282,7 +284,8 @@ function CadastroProduto() {
     setProdutoEncontrado(null);
 
     try {
-      const resposta = await fetch(`http://localhost:8080/api/produtos/${codigoBarrasReposicao}`, {
+      // CORREÇÃO: Utilizando a BASE_URL
+      const resposta = await fetch(`${BASE_URL}/api/produtos/${codigoBarrasReposicao}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (resposta.ok) {
@@ -292,7 +295,7 @@ function CadastroProduto() {
         
         // CARREGA A PROMOÇÃO PARA OS INPUTS
         setPrecoPromoEdicao(prod.precoPromocional ? prod.precoPromocional.toString() : '');
-        setDataInicioPromoEdicao(prod.dataInicioPromocao || ''); // NOVO: Traz a data de início
+        setDataInicioPromoEdicao(prod.dataInicioPromocao || ''); 
         setDataFimPromoEdicao(prod.dataFimPromocao || '');
       } else {
         alert('Produto não encontrado!');
@@ -311,7 +314,8 @@ function CadastroProduto() {
     const token = localStorage.getItem('token');
 
     try {
-      const resposta = await fetch(`http://localhost:8080/api/produtos/${produtoEncontrado.id}/adicionar-estoque`, {
+      // CORREÇÃO: Utilizando a BASE_URL
+      const resposta = await fetch(`${BASE_URL}/api/produtos/${produtoEncontrado.id}/adicionar-estoque`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

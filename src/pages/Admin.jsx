@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { BASE_URL } from '../services/api';
 
 // --- CORREÇÃO AQUI: Importação moderna do PDF ---
 import { jsPDF } from 'jspdf';               
@@ -24,7 +25,7 @@ function Admin() {
     if (!token) return navigate('/');
 
     try {
-      const resposta = await fetch('http://localhost:8080/api/produtos', {
+      const resposta = await fetch(BASE_URL + '/api/produtos', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (resposta.ok) {

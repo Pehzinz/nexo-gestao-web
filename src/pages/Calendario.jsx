@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
+import { BASE_URL } from '../services/api';
 
 function Calendario() {
   const [dataAtual, setDataAtual] = useState(new Date());
@@ -42,7 +43,7 @@ function Calendario() {
 
     // 2. Busca Eventos Manuais salvos no PostgreSQL via Java
     try {
-      const resEventos = await fetch('http://localhost:8080/api/eventos', {
+      const resEventos = await fetch(BASE_URL + '/api/eventos', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (resEventos.ok) {
@@ -55,7 +56,7 @@ function Calendario() {
 
     // 3. Busca Produtos em Promoção no Java
     try {
-      const resProdutos = await fetch('http://localhost:8080/api/produtos', {
+      const resProdutos = await fetch(BASE_URL + '/api/produtos', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (resProdutos.ok) {
@@ -127,10 +128,10 @@ function Calendario() {
       return;
     }
 
-    const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token');
     const url = editandoId 
-      ? `http://localhost:8080/api/eventos/${editandoId}` 
-      : 'http://localhost:8080/api/eventos';
+      ? `${BASE_URL}/api/eventos/${editandoId}` 
+      : BASE_URL + '/api/eventos';
     const method = editandoId ? 'PUT' : 'POST';
 
     try {
@@ -165,7 +166,7 @@ function Calendario() {
     const token = localStorage.getItem('token');
 
     try {
-      const resposta = await fetch(`http://localhost:8080/api/eventos/${editandoId}`, {
+      const resposta = await fetch(`${BASE_URL}/api/eventos/${editandoId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

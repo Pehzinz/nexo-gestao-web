@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import ReactMarkdown from 'react-markdown'; // <-- IMPORTANTE: Nova biblioteca
+import { BASE_URL } from '../services/api';
 
 function Agente() {
   const [mensagens, setMensagens] = useState([
@@ -47,7 +48,7 @@ function Agente() {
     const token = localStorage.getItem('token');
 
     try {
-      const resposta = await fetch('http://localhost:8080/api/agente/perguntar', {
+      const resposta = await fetch(BASE_URL + '/api/agente/perguntar', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

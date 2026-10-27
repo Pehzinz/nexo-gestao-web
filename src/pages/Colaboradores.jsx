@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { BASE_URL } from '../services/api';
 
 function Colaboradores() {
   const [equipe, setEquipe] = useState([]);
@@ -46,7 +47,7 @@ function Colaboradores() {
     }
 
     try {
-      const resposta = await fetch('http://localhost:8080/api/usuarios', {
+      const resposta = await fetch(BASE_URL + '/api/usuarios', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
@@ -79,7 +80,7 @@ function Colaboradores() {
 
     try {
       // Usa a mesma rota de login para checar se a credencial é de um ADMIN
-      const resposta = await fetch('http://localhost:8080/api/login', {
+      const resposta = await fetch(BASE_URL + '/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cpf: cpfAdminEdit, senha: senhaAdminEdit })
@@ -123,8 +124,8 @@ function Colaboradores() {
     };
 
     try {
-      // A rota está ajustada para /api/usuarios
-      const url = `http://localhost:8080/api/usuarios/${colaboradorEditando.id}`;
+      // CORREÇÃO: Utilizando a BASE_URL
+      const url = `${BASE_URL}/api/usuarios/${colaboradorEditando.id}`;
 
       const resposta = await fetch(url, {
         method: 'PUT',
@@ -168,7 +169,7 @@ function Colaboradores() {
     };
 
     try {
-      const resposta = await fetch('http://localhost:8080/api/usuarios', {
+      const resposta = await fetch(BASE_URL + '/api/usuarios', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -216,7 +217,8 @@ function Colaboradores() {
   const confirmarRemocao = async () => {
     const token = localStorage.getItem('token');
     try {
-      const resposta = await fetch(`http://localhost:8080/api/usuarios/${colaboradorParaRemover.id}`, {
+      // CORREÇÃO: Utilizando a BASE_URL
+      const resposta = await fetch(`${BASE_URL}/api/usuarios/${colaboradorParaRemover.id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -518,6 +520,6 @@ function Colaboradores() {
       )}
     </div>
   );
-};
+}
 
 export default Colaboradores;

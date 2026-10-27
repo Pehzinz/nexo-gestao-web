@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { BASE_URL } from '../services/api';
 
 // Importações para o Gerador de PDF
 import { jsPDF } from 'jspdf';
@@ -28,8 +29,8 @@ function Dashboard() {
 
     try {
       const [resProdutos, resVendas] = await Promise.all([
-        fetch('http://localhost:8080/api/produtos', { headers: { 'Authorization': `Bearer ${token}` } }),
-        fetch('http://localhost:8080/api/vendas', { headers: { 'Authorization': `Bearer ${token}` } })
+        fetch(BASE_URL + '/api/produtos', { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetch(BASE_URL + '/api/vendas', { headers: { 'Authorization': `Bearer ${token}` } })
       ]);
       
       if (resProdutos.ok && resVendas.ok) {
@@ -40,9 +41,9 @@ function Dashboard() {
         setVendas(dadosVendas);
       }
     } catch (erro) {
-      console.error('Erro ao buscar dados do Dashboard', erro);
+        console.error('Erro ao buscar dados do Dashboard', erro);
     } finally {
-      setCarregando(false);
+        setCarregando(false);
     }
   };
 

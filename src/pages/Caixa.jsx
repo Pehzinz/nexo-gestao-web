@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { BASE_URL } from '../services/api';
 
 function Caixa() {
   const [codigoProduto, setCodigoProduto] = useState('');
@@ -88,7 +89,7 @@ function Caixa() {
     const token = localStorage.getItem('token');
     
     try {
-      const resposta = await fetch(`http://localhost:8080/api/produtos/${codigoProduto}`, {
+      const resposta = await fetch(`${BASE_URL}/api/produtos/${codigoProduto}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
 
@@ -179,7 +180,7 @@ function Caixa() {
 
   const autorizarAcao = async () => {
     try {
-      const resposta = await fetch('http://localhost:8080/api/login', {
+      const resposta = await fetch(BASE_URL + '/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cpf: cpfAdmin, senha: senhaAdmin })
@@ -242,7 +243,7 @@ function Caixa() {
     };
 
     try {
-      const resposta = await fetch('http://localhost:8080/api/vendas', {
+      const resposta = await fetch(BASE_URL + '/api/vendas', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

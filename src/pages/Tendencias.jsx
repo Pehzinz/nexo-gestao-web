@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { BASE_URL } from '../services/api';
 import Navbar from '../components/Navbar';
 import { 
   LineChart, Line, BarChart, Bar, AreaChart, Area, PieChart, Pie, Cell,
@@ -31,7 +32,7 @@ function Tendencias() {
       
       if (token) {
         try {
-          const resProdutos = await fetch('http://localhost:8080/api/produtos', { headers });
+          const resProdutos = await fetch(BASE_URL + '/api/produtos', { headers });
           if (resProdutos.ok) {
             const dadosProd = await resProdutos.json();
             setProdutosReais(dadosProd);
@@ -40,7 +41,7 @@ function Tendencias() {
             })));
           }
 
-          const resVendas = await fetch('http://localhost:8080/api/vendas', { headers });
+          const resVendas = await fetch(BASE_URL + '/api/vendas', { headers });
           if (resVendas.ok) {
             const dadosVendas = await resVendas.json();
             if (dadosVendas.length > 0) {
@@ -50,13 +51,13 @@ function Tendencias() {
             }
           }
 
-          const resPrevisao = await fetch('http://localhost:8080/api/tendencias/previsao-vendas', { headers });
+          const resPrevisao = await fetch(BASE_URL + '/api/tendencias/previsao-vendas', { headers });
           if (resPrevisao.ok) setDadosPrevisao(await resPrevisao.json());
 
-          const resCross = await fetch('http://localhost:8080/api/tendencias/cross-selling', { headers });
+          const resCross = await fetch(BASE_URL + '/api/tendencias/cross-selling', { headers });
           if (resCross.ok) setCrossSelling(await resCross.json());
 
-          const resCurva = await fetch('http://localhost:8080/api/tendencias/curva-fluxo', { headers });
+          const resCurva = await fetch(BASE_URL + '/api/tendencias/curva-fluxo', { headers });
           if (resCurva.ok) {
             const dadosCurva = await resCurva.json();
             setCurvaABC(dadosCurva.curva);
@@ -65,7 +66,7 @@ function Tendencias() {
             setProdutoParado(dadosCurva.produtoParado);
           }
 
-          const resTrafego = await fetch('http://localhost:8080/api/tendencias/trafego', { headers });
+          const resTrafego = await fetch(BASE_URL + '/api/tendencias/trafego', { headers });
           if (resTrafego.ok) {
             const dadosTrafego = await resTrafego.json();
             setDadosHorarios(dadosTrafego.grafico);

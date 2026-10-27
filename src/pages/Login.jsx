@@ -1,21 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../services/api';
 
 function Login() {
-  // Estados para guardar o que o usuário digita nos campos
   const [cpf, setCpf] = useState('');
   const [senha, setSenha] = useState('');
- 
-  
-  // Hook do React Router para fazer o redirecionamento de página
   const navigate = useNavigate();
 
-  // Função disparada ao clicar em "Entrar"
   const fazerLogin = async (evento) => {
     evento.preventDefault();
 
     try {
-      const resposta = await fetch('http://localhost:8080/api/login', {
+      const resposta = await fetch(BASE_URL + '/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cpf, senha })
@@ -30,7 +26,6 @@ function Login() {
         localStorage.setItem('perfil', dados.perfil);
         localStorage.setItem('nome', nomeDoUsuario);
 
-        // Alerta de sucesso removido! O redirecionamento acontece direto.
         if (dados.perfil === 'ADMIN') {
           navigate('/admin');
         } else {
@@ -38,7 +33,6 @@ function Login() {
         }
         
       } else {
-        // Alertas de erro mantidos
         alert('CPF ou senha incorretos! Tente novamente.');
       }
     } catch (erro) {
